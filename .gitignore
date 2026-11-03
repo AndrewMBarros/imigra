@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Segredos e dados locais
+.env
+data/entrada/
+data/saida/
+data/processados/
+data/trigger/
+*.log
