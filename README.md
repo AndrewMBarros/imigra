@@ -2,61 +2,63 @@
 ![Selenium](https://img.shields.io/badge/Selenium-43B02A?logo=selenium&logoColor=white)
 ![Pandas](https://img.shields.io/badge/Pandas-150458?logo=pandas&logoColor=white)
 ![CustomTkinter](https://img.shields.io/badge/CustomTkinter-GUI-1E88E5)
-![Status](https://img.shields.io/badge/Status-Concluído-success)
+![Status](https://img.shields.io/badge/Status-Complete-success)
 
-# Imigra — Migração automatizada de PABX 3CX → Yeastar
+# Imigra — Automated 3CX → Yeastar PBX migration
 
-Ferramenta desktop de automação (RPA) em Python que migra clientes de PABX em nuvem do **3CX** para o **Yeastar** de ponta a ponta: extrai as configurações do painel antigo, converte os dados e cadastra tudo no painel novo, sem recadastro manual.
+[🇧🇷 Versão em Português](README.pt-BR.md)
 
-## 📋 Sobre o projeto
+Desktop automation tool (RPA) in Python that migrates cloud PBX clients from **3CX** to **Yeastar** end to end: it extracts the settings from the old panel, converts the data and registers everything in the new panel, with no manual re-entry.
 
-O Imigra nasceu da necessidade de automatizar um processo que, feito manualmente, exigia recadastrar dezenas de configurações (ramais, troncos, filas, permissões e rotas) uma a uma no novo painel. A ferramenta extrai essas configurações do 3CX, converte os dados para o formato exigido pelo Yeastar e faz o cadastro automatizado no novo sistema.
+## 📋 About
 
-## ✨ Funcionalidades
+Done by hand, this migration meant re-entering dozens of settings (extensions, trunks, queues, permissions and routes) one by one in the new panel. Imigra extracts these settings from 3CX, converts them to the format Yeastar expects and registers them in the new system automatically.
 
-- **Interface gráfica própria** (CustomTkinter), com tema escuro e cada etapa rodando em thread separada, sem travar a tela durante a automação.
-- **Ramais:** exportação do 3CX e importação automatizada no Yeastar.
-- **Troncos:** migração com geração de nomenclatura padronizada.
-- **Grupos de extensão.**
-- **Filas de atendimento** e **rotas de entrada**: previstas na interface, em desenvolvimento nesta versão.
-- **Permissões de cliente** no Yeastar.
-- **Regras de rota de saída.**
-- **Pipeline ETL (pandas):** converte os CSVs exportados do 3CX para o layout de importação do Yeastar, com mapeamento de colunas e tratamento de encoding.
-- **Navegação robusta (Selenium):** login automatizado nos dois painéis, cliques e digitação com novas tentativas para elementos que demoram a carregar.
+## ✨ Features
 
-## 🔄 Como funciona
+- **Custom GUI** (CustomTkinter) with a dark theme; each step runs in its own thread, so the window never freezes during automation.
+- **Extensions:** export from 3CX and automated import into Yeastar.
+- **Trunks:** migration with standardized naming.
+- **Extension groups.**
+- **Queues** and **inbound routes:** present in the interface, still in development in this version.
+- **Client permissions** in Yeastar.
+- **Outbound route rules.**
+- **ETL pipeline (pandas):** converts the CSVs exported from 3CX into Yeastar's import layout, with column mapping and encoding handling.
+- **Robust navigation (Selenium):** automated login to both panels, with retries for clicks and typing on elements that load slowly.
 
-1. O usuário informa, na interface, a nuvem 3CX de origem, a nuvem Yeastar de destino e o nome do cliente.
-2. O robô faz login no 3CX e exporta as configurações do cliente.
-3. O ETL converte os dados para o modelo de importação do Yeastar.
-4. O robô faz login no Yeastar e importa ou cadastra cada item.
-5. As etapas podem ser executadas separadamente ou todas em sequência.
+## 🔄 How it works
 
-## 📁 Estrutura
+1. In the interface, the user enters the source 3CX cloud, the target Yeastar cloud and the client name.
+2. The robot logs into 3CX and exports the client's settings.
+3. The ETL converts the data to Yeastar's import model.
+4. The robot logs into Yeastar and imports or registers each item.
+5. Steps can run one at a time or all in sequence.
+
+## 📁 Structure
 
 ```
 imigra/
-├── main.py                    # Interface gráfica e orquestração das etapas
+├── main.py                    # GUI and step orchestration
 ├── config/
-│   └── settings.py            # Pastas, URLs das nuvens e leitura do .env
+│   └── settings.py            # Folders, cloud URLs and .env loading
 ├── src/
 │   ├── rpa/
-│   │   ├── extensoes.py       # Ramais
-│   │   ├── troncos.py         # Troncos
-│   │   ├── filas.py           # Filas
-│   │   ├── grupos_extensao.py # Grupos de extensão
-│   │   ├── permissoes.py      # Permissões
-│   │   └── regras_saida.py    # Rotas de saída
+│   │   ├── extensoes.py       # Extensions
+│   │   ├── troncos.py         # Trunks
+│   │   ├── filas.py           # Queues
+│   │   ├── grupos_extensao.py # Extension groups
+│   │   ├── permissoes.py      # Permissions
+│   │   └── regras_saida.py    # Outbound routes
 │   ├── etl/
-│   │   └── processador.py     # Conversão 3CX → Yeastar
+│   │   └── processador.py     # 3CX → Yeastar conversion
 │   └── utils/
-│       └── navegador.py       # Driver, login e ações seguras (Selenium)
-└── data/                      # Criada na execução: entrada, saída, processados e modelos
+│       └── navegador.py       # Driver, login and safe actions (Selenium)
+└── data/                      # Created at runtime: input, output, processed and templates
 ```
 
-## ⚙️ Como executar
+## ⚙️ Getting started
 
-**Requisitos:** Python 3.12 e Google Chrome.
+**Requirements:** Python 3.12 and Google Chrome.
 
 ```bash
 git clone https://github.com/AndrewMBarros/imigra.git
@@ -64,32 +66,32 @@ cd imigra
 pip install -r requirements.txt
 ```
 
-1. Copie `.env.example` para `.env` e preencha:
+1. Copy `.env.example` to `.env` and fill in:
 
    ```
    YEASTAR_USUARIO=
    YEASTAR_SENHA=
    TRESCX_USUARIO=
    TRESCX_SENHA=
-   ORGANIZACAO=      # prefixo da organização usado na importação do Yeastar
+   ORGANIZACAO=      # organization prefix used in the Yeastar import
    ```
 
-2. Em `config/settings.py`, troque os endereços de exemplo em `URLS_3CX` e `URLS_YEASTAR` pelos das suas nuvens.
-3. Coloque os modelos de importação do Yeastar (`MODELO YEASTAR.csv` e `TRONCO YEASTAR.csv`) em `data/modelos/`. Eles são exportados do próprio painel Yeastar.
-4. Execute:
+2. In `config/settings.py`, replace the sample addresses in `URLS_3CX` and `URLS_YEASTAR` with your own clouds.
+3. Put the Yeastar import templates (`MODELO YEASTAR.csv` and `TRONCO YEASTAR.csv`) in `data/modelos/`. They are exported from the Yeastar panel itself.
+4. Run:
 
    ```bash
    python main.py
    ```
 
-> Credenciais, endereços de servidores e dados de clientes **não** fazem parte do repositório. O `.env` e as pastas de dados estão no `.gitignore`.
+> Credentials, server addresses and client data are **not** part of the repository. The `.env` file and the data folders are in `.gitignore`.
 
-## 🛠 Tecnologias
+## 🛠 Tech stack
 
 Python · Selenium · pandas · CustomTkinter · python-dotenv
 
-## 👤 Autor
+## 👤 Author
 
 **Andrew Matheus** — [LinkedIn](https://www.linkedin.com/in/andrewmbs/) · [GitHub](https://github.com/AndrewMBarros)
 
-Projeto de portfólio, publicado para demonstração técnica.
+Portfolio project, published for technical demonstration.
